@@ -10,6 +10,7 @@ exports.handleRequest = function (req, res) {
 
   // GET / -> ./public/index.html
   // GET /loading -> ./public/loading.html
+  // POST /examplesite.org -> 
 
   var routeUrl = req.url.replace("/", "");
 
@@ -26,14 +27,26 @@ exports.handleRequest = function (req, res) {
     }
     res.end();
   } else if (req.method === "POST") {
-    if(!archive.isUrlInList(routeUrl)) {
-      archive.addUrlToList(routeUrl);
-      res.writeHead(302, httpHelpers.headers);
-      res.end('Added Url to list');
-    } else {
-      res.writeHead(302, httpHelpers.headers);
-      res.end('Url already added to list');      
-    }
+
+    var data = "";
+    req.on('data', function(chunk) {
+      data += chunk;
+    });
+    req.on('end', function() {
+      var targetUrl = JSON.parse(data)['url'];
+      if(!archive.isUrlInList(targetUrl)) {
+        archive.addUrlToList(targetUrl);
+        res.writeHead(302, httpHelpers.headers);
+        console.log('Added Url to list');
+        res.end('Added Url to list');
+      } else {
+        res.writeHead(302, httpHelpers.headers);
+        console.log('Url already added to list');      
+        res.end('Url already added to list');      
+      }
+
+    });
+
   } else {
     res.writeHead(404, httpHelpers.headers);
     res.end();

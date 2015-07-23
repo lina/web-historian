@@ -36,6 +36,7 @@ exports.isUrlInList = function(url){
 };
 
 exports.addUrlToList = function(url){
+  console.log('-----------------------> url:', url)
   fs.appendFileSync(exports.paths.list, url + '\n');
 };
 
