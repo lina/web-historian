@@ -17,3 +17,46 @@ if (module.parent) {
   console.log("Listening on http://" + ip + ":" + port);
 }
 
+
+
+// var array = [];
+// var requestHandler = function(request, response) {
+//   console.log("Serving request type " + request.method + " for url " + request.url);
+
+//   var statusCode = 200;
+
+//   var headers = defaultCorsHeaders;
+//   headers['Content-Type'] = "text/plain";
+
+//   var obj = {results: array};
+
+//   if(request.method === 'POST') { 
+//     if(request.url === "/arglebargle") {
+//       statusCode = 404;
+//     } else {
+//       statusCode = 201;
+//     }
+//     var body = '';
+//     request.on('data', function(d) {
+//       body += d;
+//     });
+//     request.on('end', function() {
+//       var parsed = JSON.parse(body);
+//       array.push(parsed);
+//       // console.log("--------------->",parsed);
+//     });
+//     if(request.url === '/classes/messages') {
+//       obj = JSON.stringify(obj);
+//     }
+//   } else if (request.method === "GET") { 
+//     obj = JSON.stringify(obj);
+//     if(request.url === "/arglebargle") {
+//       statusCode = 404;
+//     } else {
+//       statusCode = 200;
+//     }
+//   }
+//   response.writeHead(statusCode, headers);
+//   response.end(obj);
+// };
+// exports.requestHandler = requestHandler;
