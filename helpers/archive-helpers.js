@@ -26,22 +26,31 @@ exports.initialize = function(pathsObj){
 // The following function names are provided to you to suggest how you might
 // modularize your code. Keep it clean!
 
-exports.readListOfUrls = function(){
-  var listOfSites = fs.readFileSync(exports.paths.list, 'utf8');
-  return listOfSites.split("\n");
+exports.readListOfUrls = function(cb){
+  var listOfSites = fs.readFileSync(exports.paths.list, 'utf8').split("\n");
+  if(cb){ cb(listOfSites); }
+  return listOfSites;
 };
 
-exports.isUrlInList = function(url){
-  return exports.readListOfUrls().indexOf(url) !== -1;
+exports.isUrlInList = function(url, cb){
+  var inList = exports.readListOfUrls().indexOf(url) !== -1;
+  if(cb){ cb(inList); }
+  return inList;
 };
 
-exports.addUrlToList = function(url){
-  console.log('-----------------------> url:', url)
+exports.addUrlToList = function(url, cb){
   fs.appendFileSync(exports.paths.list, url + '\n');
+  if(cb) {
+    cb();    
+  }
 };
 
-exports.isUrlArchived = function(url){
-  return fs.readdirSync(exports.paths.archivedSites).indexOf(url) !== -1;
+exports.isUrlArchived = function(url, cb){
+  var isArchived = fs.readdirSync(exports.paths.archivedSites).indexOf(url) !== -1;
+  if(cb) {
+    cb(isArchived);
+  }
+  return isArchived;
 };
 
 exports.downloadUrls = function(urls, cb){
