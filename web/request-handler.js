@@ -10,11 +10,10 @@ exports.handleRequest = function (req, res) {
 
   // GET / -> ./public/index.html
   // GET /loading -> ./public/loading.html
-  // var urlParser = document.createElement('a');
-  // urlParser.href = req.url;
+
+  var routeUrl = req.url.replace("/", "");
 
   if(req.method === "GET"){
-    var routeUrl = req.url.replace("/", "")
     if(routeUrl === "") {
       res.writeHead(200, httpHelpers.headers);
       httpHelpers.serveAssets(res, archive.paths.siteAssets + "/index.html");      
@@ -27,13 +26,12 @@ exports.handleRequest = function (req, res) {
     }
     res.end();
   } else if (req.method === "POST") {
-    var urlEntry = urlParse.hash;
-    if(!archive.isUrlInList(urlEntry)) {
-      archive.addUrlToList(urlEntry);
-      res.writeHead(201, httpHelpers.headers);
+    if(!archive.isUrlInList(routeUrl)) {
+      archive.addUrlToList(routeUrl);
+      res.writeHead(302, httpHelpers.headers);
       res.end('Added Url to list');
     } else {
-      res.writeHead(201, httpHelpers.headers);
+      res.writeHead(302, httpHelpers.headers);
       res.end('Url already added to list');      
     }
   } else {
